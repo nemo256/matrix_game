@@ -44,7 +44,8 @@ unsigned int choice;
 unsigned int player = 0;
 char ch = ' ';
 
-//
+// position of elements to swap
+int pos1i, pos1j, pos2i, pos2j;
 
 // welcome message
 static const char* welcome = "Welcome to the matrix game!";
@@ -173,7 +174,7 @@ matrix_board(int **mat) {
 
 int
 main(int argc, char *argv[]) {
-  // initialization (only called once)
+  // initialization (should only be called once)
   srand(time(NULL));
 
   if(argc != 2) {
