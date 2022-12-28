@@ -1,11 +1,16 @@
-#include <stdio.h>
+#include <curses.h>
 #include <stdlib.h>
 #include <time.h>
 
-#define N 5
+#define STARTX 9
+#define STARTY 3
+#define WIDTH  3
+#define HEIGHT 2
 
-unsigned int matrix[N][N];
-int sum;
+#define TRACE_VALUE TRACE_MAXIMUM 
+
+int **mat, N, sum, i, j;
+
 
 void
 initialize(unsigned int matrix[N][N]) {
@@ -54,19 +59,34 @@ show(unsigned int matrix[N][N]) {
 }
 
 int
-main() {
+main(int argc, char *argv[]) {
   // initialization (only called once)
   srand(time(NULL));
 
-  // Generate a random matrix
-  initialize(matrix);
+  if(argc != 2) {
+    printf("Usage: %s <size of the matrix>\n", argv[0]);
+    exit(0);
+  }
+  N = atoi(argv[1]);
+  if(N < 2 || N > 9) {
+    printf("Matrix size should be: 1 < N < 9\n");
+    exit(0);
+  }
 
-  // Showing the matrix
-  show(matrix);
+  // Declaring the matrix
+  mat = (int**)malloc(N * sizeof(int*));
+  for(i = 0; i < N; ++i)
+    mat[i] = (int*)malloc(N * sizeof(int));
 
-  // Rotate a matrix by 90deg
-  rotate(matrix);
+  /* // Generate a random matrix */
+  /* initialize(matrix); */
 
-  // Showing the matrix
-  show(matrix);
+  /* // Showing the matrix */
+  /* show(matrix); */
+
+  /* // Rotate a matrix by 90deg */
+  /* rotate(matrix); */
+
+  /* // Showing the matrix */
+  /* show(matrix); */
 }
