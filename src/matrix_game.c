@@ -1,5 +1,6 @@
 #include <curses.h>
 #include <stdlib.h>
+#include <string.h>
 #include <time.h>
 
 #define STARTX 9
@@ -9,6 +10,7 @@
 
 #define PRIMARY 2
 #define SECONDARY 6
+#define ACCENT 4
 
 // sumr: sum of rows
 // sumc: sum of cols
@@ -18,6 +20,10 @@ int **mat, N, sumr, sumc, sumd, i, j, temp;
 // random choice 1 | 0, 0 for rotating and 1 for permuting two values
 unsigned int choice;
 char ch;
+
+// welcome message
+static const char* welcome = "Welcome to the matrix game!";
+static const char* instructions = "You have to defeat the computer by finding the same sum of 2 rows and a column or 3 rows. Each player has two moves, to either rotate the matrix or to swap two elements in the matrix.";
 
 void
 shuffle(int **mat) {
@@ -163,6 +169,14 @@ main(int argc, char *argv[]) {
 	init_pair(4, COLOR_YELLOW, COLOR_BLACK);		// yellow
 	init_pair(5, COLOR_RED, COLOR_BLACK);				// red
 	init_pair(6, COLOR_GREEN, COLOR_BLACK);			// green
+																							//
+	// welcome / game instructions
+	/* print_in_middle(stdscr, LINES / 2, 0, 0, "Viola !!! In color ..."); */
+	attron(COLOR_PAIR(ACCENT));
+	mvwprintw(stdscr, 1, (COLS - strlen(welcome)) / 2 , "%s", welcome);
+	mvwprintw(stdscr, 2, 0, "%s", instructions);
+	attroff(COLOR_PAIR(ACCENT));
+	refresh();
 
 	curs_set(0);
 	noecho();
