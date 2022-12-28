@@ -1,10 +1,23 @@
+/*
+ * name: Neggazi Mohamed Lamine
+ * email: neggazimedlamine@gmail.com
+ * 
+ * A game where a player has to defeat the computer 
+ * by finding the same sum of 2 matrix rows and a column or 3 rows.
+ * Each player has two moves, to either rotate 
+ * the matrix or to swap two elements in the matrix.
+ */
+
 #include <curses.h>
 #include <stdlib.h>
 #include <string.h>
+#include <unistd.h>
 #include <time.h>
 
+// useful macro to get the size (length) of an array
 #define LENGTH(X)               (sizeof X / sizeof X[0])
 
+// ncurses dimensions
 #define STARTX 9
 #define STARTY 3
 #define OFFSETX 0
@@ -12,18 +25,26 @@
 #define WIDTH  5
 #define HEIGHT 2
 
+// colors
 #define PRIMARY 2
 #define SECONDARY 6
 #define ACCENT 4
 
-// sumr: sum of rows
-// sumc: sum of cols
-// sumd: sum of the first diagonal
+/*
+ * sumr: sum of rows
+ * sumc: sum of cols
+ * sumd: sum of the first diagonal
+ */
 int **mat, N, sumr, sumc, sumd, i, j, temp;
 
-// random choice 1 | 0, 0 for rotating and 1 for swapping two values
+// random choice 1 | 0, 0 for rotating and 1 for permuting two values
 unsigned int choice;
-char ch;
+
+// player 0 is you, player 1 is the computer
+unsigned int player = 0;
+char ch = ' ';
+
+//
 
 // welcome message
 static const char* welcome = "Welcome to the matrix game!";
@@ -33,8 +54,12 @@ static const char* instructions[] = {
 	"Each player has two moves, to either rotate the matrix",
 	"or to swap two elements in the matrix."
 };
+static const char* turn[] = {
+	"Your turn --> ",
+	"Wait... -->   "
+};
 static const char* keys[] = {
-	"<Press S to swap>",
+	"<Press P to permute>",
 	"<Press R to rotate>"
 };
 
@@ -185,7 +210,6 @@ main(int argc, char *argv[]) {
 	init_pair(6, COLOR_GREEN, COLOR_BLACK);			// green
 
 	// welcome / game instructions
-	/* print_in_middle(stdscr, LINES / 2, 0, 0, "Viola !!! In color ..."); */
 	attron(COLOR_PAIR(ACCENT));
 	mvwprintw(stdscr, 1, (COLS - strlen(welcome)) / 2 , "%s", welcome);
 	for (i = 0; i < LENGTH(instructions); ++i)
@@ -198,16 +222,41 @@ main(int argc, char *argv[]) {
 	curs_set(0);
 	noecho();
 	keypad(stdscr, TRUE);
+
+	// start the game
+	attron(COLOR_PAIR(ACCENT));
+	mvwprintw(stdscr, LINES / 2 + 1, COLS / 12, "%s", turn[0]);
+	attroff(COLOR_PAIR(ACCENT));
+
 	matrix_board(mat);
 	while((ch = getch()) != 'q') {
-		switch(ch) {
-			case 'r':
-				rotate(mat);
-				matrix_board(mat);
-				break;
-			case 's':
-				matrix_board(mat);
-				break;
+		if (player == 0) {
+			switch(ch) {
+				case 'r':
+					rotate(mat);
+					matrix_board(mat);
+					attron(COLOR_PAIR(ACCENT));
+					mvwprintw(stdscr, LINES / 2 + 1, COLS / 12, "%s", turn[1]);
+					attroff(COLOR_PAIR(ACCENT));
+					refresh();
+					player = 1;
+					break;
+				case 'p':
+					matrix_board(mat);
+					attron(COLOR_PAIR(ACCENT));
+					mvwprintw(stdscr, LINES / 2 + 1, COLS / 12, "%s", turn[1]);
+					attroff(COLOR_PAIR(ACCENT));
+					refresh();
+					player = 1;
+					break;
+			}
+		} else {
+			attron(COLOR_PAIR(ACCENT));
+			mvwprintw(stdscr, LINES / 2 + 1, COLS / 12, "%s", turn[0]);
+			attroff(COLOR_PAIR(ACCENT));
+			refresh();
+			player = 0;
+			sleep(2);
 		}
 	}
 	endwin();
