@@ -13,8 +13,7 @@
 // sumr: sum of rows
 // sumc: sum of cols
 // sumd: sum of the first diagonal
-int **mat, N, sumr, sumc, sumd, i, j;
-unsigned int counter = 1, temp;
+int **mat, N, sumr, sumc, sumd, i, j, temp;
 char ch;
 
 void
@@ -33,16 +32,16 @@ shuffle(int **mat) {
 void
 initialize(int **mat) {
 	for (i = 0; i < N; ++i)
-		for (j = 0; j < N; ++j, counter++)
-			mat[i][j] = counter;
+		for (j = 0; j < N; ++j)
+			mat[i][j] = i * N + j + 1;
 
 	shuffle(mat);
 }
 
 void
 rotate(int **mat) {
-  for (int i = 0; i < N / 2; i++)
-    for (int j = i, temp; j < N - i - 1; j++) {
+  for (i = 0; i < N / 2; ++i)
+    for (j = i; j < N - i; ++j) {
       temp = mat[i][j];
       mat[i][j] = mat[N - 1 - j][i];
       mat[N - 1 - j][i] = mat[N - 1 - i][N - 1 - j];
@@ -88,7 +87,7 @@ matrix_board(int **mat) {
 	int startx, starty;
 
 	starty = (LINES - N * HEIGHT) / 2;
-	startx = (COLS  - N * WIDTH) / 2;
+	startx = (COLS  - N * WIDTH)  / 2;
 	attron(COLOR_PAIR(PRIMARY));
 	board(stdscr, starty, startx, N, N, WIDTH, HEIGHT);
 	attroff(COLOR_PAIR(PRIMARY));
@@ -116,12 +115,12 @@ matrix_board(int **mat) {
 				attron(COLOR_PAIR(SECONDARY));
 				mvprintw(starty + j * HEIGHT + deltay,
 						startx + i * WIDTH  + deltax,
-						"%02d", mat[i][j]);
+						"%2d", mat[i][j]);
 				attroff(COLOR_PAIR(SECONDARY));
 			} else {
 				mvprintw(starty + j * HEIGHT + deltay,
 						startx + i * WIDTH  + deltax,
-						"%02d", mat[i][j]);
+						"%2d", mat[i][j]);
 			}
 		}
 	}
