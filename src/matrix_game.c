@@ -7,7 +7,10 @@
 #define WIDTH  5
 #define HEIGHT 2
 
-int **mat, N, sum, i, j;
+// sumr: sum of rows
+// sumc: sum of cols
+// sumd: sum of the first diagonal
+int **mat, N, sumr, sumc, sumd, i, j;
 char ch;
 
 void
@@ -60,20 +63,48 @@ board(WINDOW *win, int starty, int startx, int lines, int cols,
 	wrefresh(win);
 }
 
-void matrix_board(int **mat) {
+void
+matrix_board(int **mat) {
 	int deltax, deltay;
 	int startx, starty;
 
 	starty = (LINES - N * HEIGHT) / 2;
 	startx = (COLS  - N * WIDTH) / 2;
+	attron(COLOR_PAIR(5));
 	board(stdscr, starty, startx, N, N, WIDTH, HEIGHT);
+	attroff(COLOR_PAIR(5));
 	deltay = HEIGHT / 2;
 	deltax = WIDTH  / 2;
-	for (i = 0; i < N; ++i)
-		for (j = 0; j < N; ++j)
-			mvprintw(starty + j * HEIGHT + deltay,
-				 startx + i * WIDTH  + deltax,
-				 "%d", mat[i][j]);
+
+	sumd = 0;
+	for (i = 0; i < N; ++i) {
+		sumr = 0;
+		sumc = 0;
+		sumd += mat[i][i];
+		for (j = 0; j < N; ++j) {
+			sumr += mat[i][j];
+			sumc += mat[j][i];
+		}
+		mat[i][N] = sumr;
+		mat[N][i] = sumc;
+	}
+	mat[N][N] = sumd;
+
+	for (i = 0; i < N + 1; ++i) {
+		for (j = 0; j < N + 1; ++j) {
+			if (i == N || j == N) {
+				attron(COLOR_PAIR(6));
+				mvprintw(starty + j * HEIGHT + deltay,
+						startx + i * WIDTH  + deltax,
+						"%02d", mat[i][j]);
+				attroff(COLOR_PAIR(6));
+			} else {
+				mvprintw(starty + j * HEIGHT + deltay,
+						startx + i * WIDTH  + deltax,
+						"%02d", mat[i][j]);
+			}
+		}
+	}
 }
 
 int
@@ -92,9 +123,9 @@ main(int argc, char *argv[]) {
   }
 
   // Declaring the matrix
-  mat = (int**)malloc(N * sizeof(int*));
-  for(i = 0; i < N; ++i)
-    mat[i] = (int*)malloc(N * sizeof(int));
+  mat = (int**)malloc((N + 1) * sizeof(int*));
+  for(i = 0; i < N + 1; ++i)
+    mat[i] = (int*)malloc((N + 1) * sizeof(int));
 
   // Generate a random matrix
   initialize(mat);
@@ -107,17 +138,19 @@ main(int argc, char *argv[]) {
 	use_default_colors();
 
 	// Initialize color pairs
-	init_pair(1, COLOR_RED, COLOR_BLACK);				// red
+	init_pair(1, COLOR_BLACK, COLOR_MAGENTA);		// magenta - inverted
 	init_pair(2, COLOR_MAGENTA, COLOR_BLACK);		// magenta
 	init_pair(3, COLOR_CYAN, COLOR_BLACK);			// cyan
 	init_pair(4, COLOR_YELLOW, COLOR_BLACK);		// yellow
+	init_pair(5, COLOR_RED, COLOR_BLACK);				// red
+	init_pair(6, COLOR_GREEN, COLOR_BLACK);			// green
 
 	curs_set(0);
 	noecho();
 	keypad(stdscr, TRUE);
-	attron(COLOR_PAIR(2));
+	attron(COLOR_PAIR(5));
 	matrix_board(mat);
-	attroff(COLOR_PAIR(2));
+	attroff(COLOR_PAIR(5));
 	while((ch = getch()) != 'q') {
 		switch(ch) {
 			case 'r':
