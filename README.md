@@ -32,12 +32,13 @@ matrix_game/
 $ git clone https://github.com/nemo256/matrix_game
 $ cd matrix_game
 $ make
+$ make install
 ```
 ## Usage
-> ./matrix_game <size_of_matrix>
+> matrix_game <size_of_matrix>
 - Using 5 as the size:
 ```
-$ ./matrix_game 5
+$ matrix_game 5
 ```
 - Press R or P to either rotate the matrix or permute two values.
 
