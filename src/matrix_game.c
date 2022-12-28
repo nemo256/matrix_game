@@ -7,10 +7,8 @@
 #define WIDTH  5
 #define HEIGHT 2
 
-#define TRACE_VALUE TRACE_MAXIMUM 
-
 int **mat, N, sum, i, j;
-
+char ch;
 
 void
 initialize(int **mat) {
@@ -29,103 +27,6 @@ rotate(int **mat) {
       mat[N - 1 - i][N - 1 - j] = mat[j][N - 1 - i];
       mat[j][N - 1 - i] = temp;
     }
-}
-
-void
-show(int **mat) {
-  printf("Matrix = {\n");
-  for (int i = 0; i < N; i++) {
-    sum = 0;
-    printf(" {", i);
-    for (int j = 0; j < N; j++) {
-      sum += mat[i][j];
-      printf(" %2d,", mat[i][j]);
-    }
-    printf(" }, - %d\n", sum);
-  }
-
-  printf("  ");
-  for (int i = 0; i < N; i++)
-    printf("  | ");
-  printf("\n  ");
-
-  for (int i = 0; i < N; i++) {
-    sum = 0;
-    for (int j = 0; j < N; j++)
-      sum += mat[j][i];
-    printf(" %d ", sum);
-  }
-  printf("\n}\n");
-}
-
-void
-magic(int **mat, int n) {	
-	int i,j,k;
-	int row,col;
-	for(i = 0;i < n;++i)
-		for(j = 0;j < n;++j)
-			mat[i][j] = -1;
-	row = 0;
-	col = n / 2;
-
-	k = 1;
-	mat[row][col] = k;
-	
-	while(k != n * n)
-	{	
-		if(row == 0 && col != n - 1)
-		{	row = n - 1;
-			col ++;
-			mat[row][col] = ++k;
-		}
-		else if(row != 0 && col != n - 1)
-		{	if(mat[row - 1][col + 1] == -1)
-			{	row --;
-				col ++;	
-				mat[row][col] = ++k;
-			}
-			else
-			{	
-				row ++;
-				mat[row][col] = ++k;
-			}
-		}
-		else if(row != 0 && col == n - 1)
-		{	
-			row --;
-			col = 0;
-			mat[row][col] = ++k;
-		}
-		else if(row == 0 && col == n - 1)
-		{	row ++;
-			mat[row][col] = ++k;	
-		}
-			
-	}
-	return;
-}
-
-void
-print(int **mat, int N) {
-	int x,y;
-	x = STARTX;
-	y = STARTY;
-	mvprintw(1,30, "MAGIC SQUARE");
-	for (i = 0; i < N; ++i) {
-		for (j = 0; j < N; ++j) {
-			mvprintw(y, x, "%d", mat[i][j]);
-			if (N > 9)
-				x += 4;
-			else
-				x += 6;
-		}
-		x = STARTX;
-		if (N > 7)
-			y += 2;
-		else
-			y += 3;
-	}
-	refresh();
 }
 
 void
@@ -202,17 +103,16 @@ main(int argc, char *argv[]) {
 	initscr();
 	curs_set(0);
 	noecho();
+	keypad(stdscr, TRUE);
 	matrix_board(mat);
+	while((ch = getch()) != 'q') {
+		switch(ch) {
+			case 'r':
+				rotate(mat);
+				matrix_board(mat);
+				break;
+		}
+	}
 	getch();
 	endwin();
-
-
-  /* // Showing the matrix */
-  /* show(matrix); */
-
-  /* // Rotate a matrix by 90deg */
-  /* rotate(matrix); */
-
-  /* // Showing the matrix */
-  /* show(matrix); */
 }
