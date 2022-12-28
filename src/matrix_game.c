@@ -70,9 +70,9 @@ matrix_board(int **mat) {
 
 	starty = (LINES - N * HEIGHT) / 2;
 	startx = (COLS  - N * WIDTH) / 2;
-	attron(COLOR_PAIR(5));
+	attron(COLOR_PAIR(3));
 	board(stdscr, starty, startx, N, N, WIDTH, HEIGHT);
-	attroff(COLOR_PAIR(5));
+	attroff(COLOR_PAIR(3));
 	deltay = HEIGHT / 2;
 	deltax = WIDTH  / 2;
 
@@ -148,9 +148,7 @@ main(int argc, char *argv[]) {
 	curs_set(0);
 	noecho();
 	keypad(stdscr, TRUE);
-	attron(COLOR_PAIR(5));
 	matrix_board(mat);
-	attroff(COLOR_PAIR(5));
 	while((ch = getch()) != 'q') {
 		switch(ch) {
 			case 'r':
