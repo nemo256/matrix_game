@@ -8,13 +8,21 @@ EXE_DIR=.
 
 EXES = ${EXE_DIR}/matrix_game
 
+all:    ${EXES}
+
 ${EXE_DIR}/%: %.o
 	${CC} -o $@ $< ${LIBS}
 
 %.o: ${SRC_DIR}/%.c
 	${CC} -o $@ -c $<
 
-all:    ${EXES}
+install: all
+	mkdir -p /usr/local/bin
+	cp -f ${EXES} /usr/local/bin
+	chmod 755 /usr/local/bin/${EXES}
+
+uninstall:
+	rm -f /usr/local/bin/${EXES}
 
 clean:
 	@rm -f ${EXES}
