@@ -21,7 +21,7 @@
 // sumd: sum of the first diagonal
 int **mat, N, sumr, sumc, sumd, i, j, temp;
 
-// random choice 1 | 0, 0 for rotating and 1 for permuting two values
+// random choice 1 | 0, 0 for rotating and 1 for swapping two values
 unsigned int choice;
 char ch;
 
@@ -34,7 +34,7 @@ static const char* instructions[] = {
 	"or to swap two elements in the matrix."
 };
 static const char* keys[] = {
-	"<Press P to permute>",
+	"<Press S to swap>",
 	"<Press R to rotate>"
 };
 
@@ -205,7 +205,7 @@ main(int argc, char *argv[]) {
 				rotate(mat);
 				matrix_board(mat);
 				break;
-			case 'p':
+			case 's':
 				matrix_board(mat);
 				break;
 		}
