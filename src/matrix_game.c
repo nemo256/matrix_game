@@ -8,7 +8,7 @@
 #define STARTX 9
 #define STARTY 3
 #define OFFSETX 0
-#define OFFSETY 2
+#define OFFSETY 1
 #define WIDTH  5
 #define HEIGHT 2
 
