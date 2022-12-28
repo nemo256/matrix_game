@@ -7,6 +7,8 @@
 
 #define STARTX 9
 #define STARTY 3
+#define OFFSETX 0
+#define OFFSETY 2
 #define WIDTH  5
 #define HEIGHT 2
 
@@ -31,6 +33,11 @@ static const char* instructions[] = {
 	"Each player has two moves, to either rotate the matrix",
 	"or to swap two elements in the matrix."
 };
+static const char* keys[] = {
+	"<Press R to rotate>",
+	"<Press P to permute>"
+};
+
 
 void
 shuffle(int **mat) {
@@ -102,8 +109,8 @@ matrix_board(int **mat) {
 	int deltax, deltay;
 	int startx, starty;
 
-	starty = (LINES - N * HEIGHT) / 2 + 2;
-	startx = (COLS  - N * WIDTH)  / 2;
+	starty = (LINES - N * HEIGHT) / 2 + OFFSETY;
+	startx = (COLS  - N * WIDTH)  / 2 + OFFSETX;
 	attron(COLOR_PAIR(PRIMARY));
 	board(stdscr, starty, startx, N, N, WIDTH, HEIGHT);
 	attroff(COLOR_PAIR(PRIMARY));
@@ -183,6 +190,8 @@ main(int argc, char *argv[]) {
 	mvwprintw(stdscr, 1, (COLS - strlen(welcome)) / 2 , "%s", welcome);
 	for (i = 0; i < LENGTH(instructions); ++i)
 		mvwprintw(stdscr, i + 2, (COLS - strlen(instructions[i])) / 2, "%s", instructions[i]);
+	for (i = 0; i < LENGTH(keys); ++i)
+		mvwprintw(stdscr, LINES - i - 1, 1, "%s", keys[i]);
 	attroff(COLOR_PAIR(ACCENT));
 	refresh();
 
