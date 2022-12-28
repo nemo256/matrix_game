@@ -102,7 +102,7 @@ matrix_board(int **mat) {
 	int deltax, deltay;
 	int startx, starty;
 
-	starty = (LINES - N * HEIGHT) / 2;
+	starty = (LINES - N * HEIGHT) / 2 + 2;
 	startx = (COLS  - N * WIDTH)  / 2;
 	attron(COLOR_PAIR(PRIMARY));
 	board(stdscr, starty, startx, N, N, WIDTH, HEIGHT);
