@@ -95,19 +95,16 @@ matrix_board(int **mat) {
 	deltax = WIDTH  / 2;
 
 	// find all sums
-	sumd = 0;
+	mat[N][N] = 0;
 	for (i = 0; i < N; ++i) {
-		sumr = 0;
-		sumc = 0;
-		sumd += mat[i][i];
+		mat[i][N] = 0;
+		mat[N][i] = 0;
+		mat[N][N] += mat[i][i];
 		for (j = 0; j < N; ++j) {
-			sumr += mat[i][j];
-			sumc += mat[j][i];
+			mat[i][N] += mat[i][j];
+			mat[N][i] += mat[j][i];
 		}
-		mat[i][N] = sumr;
-		mat[N][i] = sumc;
 	}
-	mat[N][N] = sumd;
 
 	for (i = 0; i < N + 1; ++i) {
 		for (j = 0; j < N + 1; ++j) {
@@ -115,7 +112,7 @@ matrix_board(int **mat) {
 				attron(COLOR_PAIR(SECONDARY));
 				mvprintw(starty + j * HEIGHT + deltay,
 						startx + i * WIDTH  + deltax,
-						"%2d", mat[i][j]);
+						"%03d", mat[i][j]);
 				attroff(COLOR_PAIR(SECONDARY));
 			} else {
 				mvprintw(starty + j * HEIGHT + deltay,
