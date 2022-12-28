@@ -23,7 +23,12 @@ char ch;
 
 // welcome message
 static const char* welcome = "Welcome to the matrix game!";
-static const char* instructions = "You have to defeat the computer by finding the same sum of 2 rows and a column or 3 rows. Each player has two moves, to either rotate the matrix or to swap two elements in the matrix.";
+static const char* instructions[] = {
+	"You have to defeat the computer by finding",
+	"the same sum of 2 rows and a column or 3 rows.",
+	"Each player has two moves, to either rotate the matrix",
+	"or to swap two elements in the matrix."
+};
 
 void
 shuffle(int **mat) {
