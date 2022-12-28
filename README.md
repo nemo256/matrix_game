@@ -39,6 +39,7 @@ $ make
 ```
 $ ./matrix_game 5
 ```
+- Press R or P to either rotate the matrix or permute two values.
 
 ## Develop
 - Download the project:

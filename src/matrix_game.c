@@ -205,6 +205,9 @@ main(int argc, char *argv[]) {
 				rotate(mat);
 				matrix_board(mat);
 				break;
+			case 'p':
+				matrix_board(mat);
+				break;
 		}
 	}
 	endwin();
