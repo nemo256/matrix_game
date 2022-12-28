@@ -7,6 +7,9 @@
 #define WIDTH  5
 #define HEIGHT 2
 
+#define PRIMARY 2
+#define SECONDARY 6
+
 // sumr: sum of rows
 // sumc: sum of cols
 // sumd: sum of the first diagonal
@@ -70,12 +73,13 @@ matrix_board(int **mat) {
 
 	starty = (LINES - N * HEIGHT) / 2;
 	startx = (COLS  - N * WIDTH) / 2;
-	attron(COLOR_PAIR(3));
+	attron(COLOR_PAIR(PRIMARY));
 	board(stdscr, starty, startx, N, N, WIDTH, HEIGHT);
-	attroff(COLOR_PAIR(3));
+	attroff(COLOR_PAIR(PRIMARY));
 	deltay = HEIGHT / 2;
 	deltax = WIDTH  / 2;
 
+	// find all sums
 	sumd = 0;
 	for (i = 0; i < N; ++i) {
 		sumr = 0;
@@ -93,11 +97,11 @@ matrix_board(int **mat) {
 	for (i = 0; i < N + 1; ++i) {
 		for (j = 0; j < N + 1; ++j) {
 			if (i == N || j == N) {
-				attron(COLOR_PAIR(6));
+				attron(COLOR_PAIR(SECONDARY));
 				mvprintw(starty + j * HEIGHT + deltay,
 						startx + i * WIDTH  + deltax,
 						"%02d", mat[i][j]);
-				attroff(COLOR_PAIR(6));
+				attroff(COLOR_PAIR(SECONDARY));
 			} else {
 				mvprintw(starty + j * HEIGHT + deltay,
 						startx + i * WIDTH  + deltax,
@@ -122,22 +126,22 @@ main(int argc, char *argv[]) {
     exit(0);
   }
 
-  // Declaring the matrix
+  // declaring the matrix
   mat = (int**)malloc((N + 1) * sizeof(int*));
   for(i = 0; i < N + 1; ++i)
     mat[i] = (int*)malloc((N + 1) * sizeof(int));
 
-  // Generate a random matrix
+  // generate a random matrix
   initialize(mat);
 
   // ncurses initialization and showing the matrix
 	initscr();
 
-	// Start color function from ncurses
+	// start color function from ncurses
 	start_color();
 	use_default_colors();
 
-	// Initialize color pairs
+	// initialize color pairs
 	init_pair(1, COLOR_BLACK, COLOR_MAGENTA);		// magenta - inverted
 	init_pair(2, COLOR_MAGENTA, COLOR_BLACK);		// magenta
 	init_pair(3, COLOR_CYAN, COLOR_BLACK);			// cyan
