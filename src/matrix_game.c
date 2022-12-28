@@ -101,10 +101,23 @@ main(int argc, char *argv[]) {
 
   // ncurses initialization and showing the matrix
 	initscr();
+
+	// Start color function from ncurses
+	start_color();
+	use_default_colors();
+
+	// Initialize color pairs
+	init_pair(1, COLOR_RED, COLOR_BLACK);				// red
+	init_pair(2, COLOR_MAGENTA, COLOR_BLACK);		// magenta
+	init_pair(3, COLOR_CYAN, COLOR_BLACK);			// cyan
+	init_pair(4, COLOR_YELLOW, COLOR_BLACK);		// yellow
+
 	curs_set(0);
 	noecho();
 	keypad(stdscr, TRUE);
+	attron(COLOR_PAIR(2));
 	matrix_board(mat);
+	attroff(COLOR_PAIR(2));
 	while((ch = getch()) != 'q') {
 		switch(ch) {
 			case 'r':
@@ -113,6 +126,5 @@ main(int argc, char *argv[]) {
 				break;
 		}
 	}
-	getch();
 	endwin();
 }
