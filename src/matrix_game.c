@@ -34,8 +34,8 @@ static const char* instructions[] = {
 	"or to swap two elements in the matrix."
 };
 static const char* keys[] = {
-	"<Press R to rotate>",
-	"<Press P to permute>"
+	"<Press P to permute>",
+	"<Press R to rotate>"
 };
 
 
