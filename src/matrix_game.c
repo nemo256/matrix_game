@@ -14,6 +14,9 @@
 // sumc: sum of cols
 // sumd: sum of the first diagonal
 int **mat, N, sumr, sumc, sumd, i, j, temp;
+
+// random choice 1 | 0, 0 for rotating and 1 for permuting two values
+unsigned int choice;
 char ch;
 
 void
