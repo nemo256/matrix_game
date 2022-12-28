@@ -46,7 +46,7 @@ $ ./matrix_game 5
 $ git clone https://github.com/nemo256/matrix_game
 $ cd matrix_game
 ```
-- Now change in <src/matrix_game.c> (using vim):
+- Now change <src/matrix_game.c> (using vim):
 ```
 $ vim src/matrix_game.c
 ```
