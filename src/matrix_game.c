@@ -14,13 +14,29 @@
 // sumc: sum of cols
 // sumd: sum of the first diagonal
 int **mat, N, sumr, sumc, sumd, i, j;
+unsigned int counter = 1, temp;
 char ch;
 
 void
+shuffle(int **mat) {
+	int r;
+	for (i = 0; i < N; ++i) {
+     r = rand() % N;
+     for (j = 0; j < N; ++j) {
+         temp =  mat[i][j];
+         mat[i][j] = mat[r][j];
+         mat[r][j] = temp;
+     }
+  }
+}
+
+void
 initialize(int **mat) {
-  for (int i = 0; i < N; i++)
-    for (int j = 0; j < N; j++)
-      mat[i][j] = rand() % 26;
+	for (i = 0; i < N; ++i)
+		for (j = 0; j < N; ++j, counter++)
+			mat[i][j] = counter;
+
+	shuffle(mat);
 }
 
 void
