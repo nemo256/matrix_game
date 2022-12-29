@@ -30,24 +30,15 @@
 #define SECONDARY 6
 #define ACCENT 4
 
-/*
- * sumr: sum of rows
- * sumc: sum of cols
- * sumd: sum of the first diagonal
- */
-int **mat, N, sumr, sumc, sumd, i, j, temp;
+// Matrix and its indices
+int **mat, N, i, j, temp;
 
-// random choice 1 | 0, 0 for rotating and 1 for permuting two values
-unsigned int choice;
-
-// player 0 is you, player 1 is the computer
-unsigned int player = 0;
+// Player 0 is You, player 1 is the Computer
+enum player { You, Computer };
+enum player player;
 char ch = ' ';
 
-// position of elements to swap
-int pos1i, pos1j, pos2i, pos2j;
-
-// welcome message
+// Messages
 static const char* welcome = "Welcome to the matrix game!";
 static const char* instructions[] = {
 	"You have to defeat the computer by finding",
@@ -63,6 +54,11 @@ static const char* keys[] = {
 	"<Press P to permute>",
 	"<Press R to rotate>"
 };
+
+// position of elements to swap
+typedef struct {
+	unsigned int i, j;
+} Position;
 
 
 void
@@ -231,7 +227,7 @@ main(int argc, char *argv[]) {
 
 	matrix_board(mat);
 	while((ch = getch()) != 'q') {
-		if (player == 0) {
+		if (player == You) {
 			switch(ch) {
 				case 'r':
 					rotate(mat);
@@ -240,7 +236,7 @@ main(int argc, char *argv[]) {
 					mvwprintw(stdscr, LINES / 2 + 1, COLS / 12, "%s", turn[1]);
 					attroff(COLOR_PAIR(ACCENT));
 					refresh();
-					player = 1;
+					player = Computer;
 					break;
 				case 'p':
 					matrix_board(mat);
@@ -248,16 +244,16 @@ main(int argc, char *argv[]) {
 					mvwprintw(stdscr, LINES / 2 + 1, COLS / 12, "%s", turn[1]);
 					attroff(COLOR_PAIR(ACCENT));
 					refresh();
-					player = 1;
+					player = Computer;
 					break;
 			}
 		} else {
+			sleep(2);
 			attron(COLOR_PAIR(ACCENT));
 			mvwprintw(stdscr, LINES / 2 + 1, COLS / 12, "%s", turn[0]);
 			attroff(COLOR_PAIR(ACCENT));
 			refresh();
-			player = 0;
-			sleep(2);
+			player = You;
 		}
 	}
 	endwin();
