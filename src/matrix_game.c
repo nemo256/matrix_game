@@ -58,41 +58,41 @@ typedef struct {
 } Position;
 
 /* Declarations */
-static int **mat, N;
+static int **a, N;
 static int i, j, temp;
 
 
 void
-shuffle(int **mat) {
+shuffle(int **a) {
 	int r;
 	for (i = 0; i < N; ++i) {
      r = rand() % N;
      for (j = 0; j < N; ++j) {
-         temp =  mat[i][j];
-         mat[i][j] = mat[r][j];
-         mat[r][j] = temp;
+         temp =  a[i][j];
+         a[i][j] = a[r][j];
+         a[r][j] = temp;
      }
   }
 }
 
 void
-initialize(int **mat) {
+initialize(int **a) {
 	for (i = 0; i < N; ++i)
 		for (j = 0; j < N; ++j)
-			mat[i][j] = i * N + j + 1;
+			a[i][j] = i * N + j + 1;
 
-	shuffle(mat);
+	shuffle(a);
 }
 
 void
-rotate(int **mat) {
+rotate(int **a) {
   for (i = 0; i < N / 2; ++i)
     for (j = i; j < N - i; ++j) {
-      temp = mat[i][j];
-      mat[i][j] = mat[N - 1 - j][i];
-      mat[N - 1 - j][i] = mat[N - 1 - i][N - 1 - j];
-      mat[N - 1 - i][N - 1 - j] = mat[j][N - 1 - i];
-      mat[j][N - 1 - i] = temp;
+      temp = a[i][j];
+      a[i][j] = a[N - 1 - j][i];
+      a[N - 1 - j][i] = a[N - 1 - i][N - 1 - j];
+      a[N - 1 - i][N - 1 - j] = a[j][N - 1 - i];
+      a[j][N - 1 - i] = temp;
     }
 }
 
@@ -128,7 +128,7 @@ board(WINDOW *win, int starty, int startx, int lines, int cols,
 }
 
 void
-matrix_board(int **mat) {
+matrix_board(int **a) {
 	int deltax, deltay;
 	int startx, starty;
 
@@ -141,14 +141,14 @@ matrix_board(int **mat) {
 	deltax = WIDTH  / 2;
 
 	/* Find all sums */
-	mat[N][N] = 0;
+	a[N][N] = 0;
 	for (i = 0; i < N; ++i) {
-		mat[i][N] = 0;
-		mat[N][i] = 0;
-		mat[N][N] += mat[i][i];
+		a[i][N] = 0;
+		a[N][i] = 0;
+		a[N][N] += a[i][i];
 		for (j = 0; j < N; ++j) {
-			mat[i][N] += mat[i][j];
-			mat[N][i] += mat[j][i];
+			a[i][N] += a[i][j];
+			a[N][i] += a[j][i];
 		}
 	}
 
@@ -158,12 +158,12 @@ matrix_board(int **mat) {
 				attron(COLOR_PAIR(SECONDARY));
 				mvprintw(starty + j * HEIGHT + deltay,
 						startx + i * WIDTH  + deltax,
-						"%03d", mat[i][j]);
+						"%03d", a[i][j]);
 				attroff(COLOR_PAIR(SECONDARY));
 			} else {
 				mvprintw(starty + j * HEIGHT + deltay,
 						startx + i * WIDTH  + deltax,
-						"%2d", mat[i][j]);
+						"%2d", a[i][j]);
 			}
 		}
 	}
@@ -185,12 +185,12 @@ main(int argc, char *argv[]) {
   }
 
   /* Declaring the matrix */
-  mat = (int**)malloc((N + 1) * sizeof(int*));
+  a = (int**)malloc((N + 1) * sizeof(int*));
   for(i = 0; i < N + 1; ++i)
-    mat[i] = (int*)malloc((N + 1) * sizeof(int));
+    a[i] = (int*)malloc((N + 1) * sizeof(int));
 
   /* Generate a random matrix */
-  initialize(mat);
+  initialize(a);
 
   /* Ncurses initialization and showing the matrix */
 	initscr();
@@ -226,13 +226,13 @@ main(int argc, char *argv[]) {
 	mvwprintw(stdscr, LINES / 2 + 1, COLS / 12, "%s", turn[0]);
 	attroff(COLOR_PAIR(ACCENT));
 
-	matrix_board(mat);
+	matrix_board(a);
 	while((ch = getch()) != 'q') {
 		if (player == You) {
 			switch(ch) {
 				case 'r':
-					rotate(mat);
-					matrix_board(mat);
+					rotate(a);
+					matrix_board(a);
 					attron(COLOR_PAIR(ACCENT));
 					mvwprintw(stdscr, LINES / 2 + 1, COLS / 12, "%s", turn[1]);
 					attroff(COLOR_PAIR(ACCENT));
@@ -240,7 +240,7 @@ main(int argc, char *argv[]) {
 					player = Computer;
 					break;
 				case 'p':
-					matrix_board(mat);
+					matrix_board(a);
 					attron(COLOR_PAIR(ACCENT));
 					mvwprintw(stdscr, LINES / 2 + 1, COLS / 12, "%s", turn[1]);
 					attroff(COLOR_PAIR(ACCENT));
