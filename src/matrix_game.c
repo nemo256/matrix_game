@@ -249,21 +249,17 @@ main(int argc, char *argv[]) {
 				case 'r':
 					rotate(a);
 					matrix_board(a);
-					attron(COLOR_PAIR(ACCENT));
-					mvwprintw(stdscr, LINES / 2 + 1, COLS / 12, "%s", turn[1]);
-					attroff(COLOR_PAIR(ACCENT));
-					refresh();
 					player = Computer;
 					break;
 				case 'p':
 					matrix_board(a);
-					attron(COLOR_PAIR(ACCENT));
-					mvwprintw(stdscr, LINES / 2 + 1, COLS / 12, "%s", turn[1]);
-					attroff(COLOR_PAIR(ACCENT));
-					refresh();
 					player = Computer;
 					break;
 			}
+			attron(COLOR_PAIR(ACCENT));
+			mvwprintw(stdscr, LINES / 2 + 1, COLS / 12, "%s", turn[1]);
+			attroff(COLOR_PAIR(ACCENT));
+			refresh();
 		} else {
 			sleep(2);
 			attron(COLOR_PAIR(ACCENT));
