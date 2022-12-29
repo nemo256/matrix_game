@@ -14,10 +14,10 @@
 #include <unistd.h>
 #include <time.h>
 
-/* Useful macro to get the size (length) of an array */
+/* useful macro to get the size (length) of an array */
 #define LENGTH(X)               (sizeof X / sizeof X[0])
 
-/* Ncurses dimensions */
+/* ncurses dimensions */
 #define STARTX 9
 #define STARTY 3
 #define OFFSETX 0
@@ -25,17 +25,17 @@
 #define WIDTH  5
 #define HEIGHT 2
 
-/* Colors */
+/* colors */
 #define PRIMARY 2
 #define SECONDARY 6
 #define ACCENT 4
 
-/* Player 0 is You, player 1 is the Computer */
+/* player 0 is You, player 1 is the Computer */
 enum player { You, Computer };
 enum player player;
 char ch = ' ';
 
-/* Messages */
+/* messages */
 static const char* welcome = "Welcome to the matrix game!";
 static const char* instructions[] = {
 	"You have to defeat the computer by finding",
@@ -52,12 +52,19 @@ static const char* keys[] = {
 	"<Press R to rotate>"
 };
 
-/* Position of elements to swap */
+/* position of elements to swap */
 typedef struct {
 	unsigned int i, j;
 } Position;
 
-/* Declarations */
+/* function declarations */
+static void shuffle(int **a);
+static void initialize(int **a);
+static void rotate(int **a);
+static void board(WINDOW *win, int starty, int startx, int lines, int cols, int tile_width, int tile_height);
+static void matrix_board(int **a);
+
+/* declarations */
 static int **a, N;
 static int i, j, temp;
 
@@ -140,7 +147,7 @@ matrix_board(int **a) {
 	deltay = HEIGHT / 2;
 	deltax = WIDTH  / 2;
 
-	/* Find all sums */
+	/* find all sums */
 	a[N][N] = 0;
 	for (i = 0; i < N; ++i) {
 		a[i][N] = 0;
@@ -171,7 +178,7 @@ matrix_board(int **a) {
 
 int
 main(int argc, char *argv[]) {
-  /* Initialization (should only be called once) */
+  /* initialization (should only be called once) */
   srand(time(NULL));
 
   if(argc != 2) {
@@ -184,22 +191,22 @@ main(int argc, char *argv[]) {
     exit(0);
   }
 
-  /* Declaring the matrix */
+  /* declaring the matrix */
   a = (int**)malloc((N + 1) * sizeof(int*));
   for(i = 0; i < N + 1; ++i)
     a[i] = (int*)malloc((N + 1) * sizeof(int));
 
-  /* Generate a random matrix */
+  /* generate a random matrix */
   initialize(a);
 
-  /* Ncurses initialization and showing the matrix */
+  /* ncurses initialization and showing the matrix */
 	initscr();
 
-	/* Start color function from ncurses */
+	/* start color function from ncurses */
 	start_color();
 	use_default_colors();
 
-	/* Initialize color pairs */
+	/* initialize color pairs */
 	init_pair(1, COLOR_BLACK, COLOR_MAGENTA);		// magenta - inverted
 	init_pair(2, COLOR_MAGENTA, COLOR_BLACK);		// magenta
 	init_pair(3, COLOR_CYAN, COLOR_BLACK);			// cyan
@@ -207,7 +214,7 @@ main(int argc, char *argv[]) {
 	init_pair(5, COLOR_RED, COLOR_BLACK);				// red
 	init_pair(6, COLOR_GREEN, COLOR_BLACK);			// green
 
-	/* Welcome message / game instructions */
+	/* welcome message / game instructions */
 	attron(COLOR_PAIR(ACCENT));
 	mvwprintw(stdscr, 1, (COLS - strlen(welcome)) / 2 , "%s", welcome);
 	for (i = 0; i < LENGTH(instructions); ++i)
@@ -221,7 +228,7 @@ main(int argc, char *argv[]) {
 	noecho();
 	keypad(stdscr, TRUE);
 
-	/* Start the game */
+	/* start the game */
 	attron(COLOR_PAIR(ACCENT));
 	mvwprintw(stdscr, LINES / 2 + 1, COLS / 12, "%s", turn[0]);
 	attroff(COLOR_PAIR(ACCENT));
