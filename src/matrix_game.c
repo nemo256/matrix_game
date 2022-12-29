@@ -1,6 +1,7 @@
-/*
- * name: Neggazi Mohamed Lamine
- * email: neggazimedlamine@gmail.com
+/* See LICENSE file for copyright and license details.
+ *
+ * Author: Neggazi Mohamed Lamine
+ * Email: neggazimedlamine@gmail.com
  * 
  * A game where a player has to defeat the computer 
  * by finding the same sum of 2 matrix rows and a column or 3 rows.
