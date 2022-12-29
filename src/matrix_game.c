@@ -14,10 +14,10 @@
 #include <unistd.h>
 #include <time.h>
 
-// useful macro to get the size (length) of an array
+// Useful macro to get the size (length) of an array
 #define LENGTH(X)               (sizeof X / sizeof X[0])
 
-// ncurses dimensions
+// Ncurses dimensions
 #define STARTX 9
 #define STARTY 3
 #define OFFSETX 0
@@ -25,7 +25,7 @@
 #define WIDTH  5
 #define HEIGHT 2
 
-// colors
+// Colors
 #define PRIMARY 2
 #define SECONDARY 6
 #define ACCENT 4
@@ -55,7 +55,7 @@ static const char* keys[] = {
 	"<Press R to rotate>"
 };
 
-// position of elements to swap
+// Position of elements to swap
 typedef struct {
 	unsigned int i, j;
 } Position;
@@ -139,7 +139,7 @@ matrix_board(int **mat) {
 	deltay = HEIGHT / 2;
 	deltax = WIDTH  / 2;
 
-	// find all sums
+	// Find all sums
 	mat[N][N] = 0;
 	for (i = 0; i < N; ++i) {
 		mat[i][N] = 0;
@@ -170,7 +170,7 @@ matrix_board(int **mat) {
 
 int
 main(int argc, char *argv[]) {
-  // initialization (should only be called once)
+  // Initialization (should only be called once)
   srand(time(NULL));
 
   if(argc != 2) {
@@ -183,22 +183,22 @@ main(int argc, char *argv[]) {
     exit(0);
   }
 
-  // declaring the matrix
+  // Declaring the matrix
   mat = (int**)malloc((N + 1) * sizeof(int*));
   for(i = 0; i < N + 1; ++i)
     mat[i] = (int*)malloc((N + 1) * sizeof(int));
 
-  // generate a random matrix
+  // Generate a random matrix
   initialize(mat);
 
-  // ncurses initialization and showing the matrix
+  // Ncurses initialization and showing the matrix
 	initscr();
 
-	// start color function from ncurses
+	// Start color function from ncurses
 	start_color();
 	use_default_colors();
 
-	// initialize color pairs
+	// Initialize color pairs
 	init_pair(1, COLOR_BLACK, COLOR_MAGENTA);		// magenta - inverted
 	init_pair(2, COLOR_MAGENTA, COLOR_BLACK);		// magenta
 	init_pair(3, COLOR_CYAN, COLOR_BLACK);			// cyan
@@ -206,7 +206,7 @@ main(int argc, char *argv[]) {
 	init_pair(5, COLOR_RED, COLOR_BLACK);				// red
 	init_pair(6, COLOR_GREEN, COLOR_BLACK);			// green
 
-	// welcome / game instructions
+	// Welcome message / game instructions
 	attron(COLOR_PAIR(ACCENT));
 	mvwprintw(stdscr, 1, (COLS - strlen(welcome)) / 2 , "%s", welcome);
 	for (i = 0; i < LENGTH(instructions); ++i)
@@ -220,7 +220,7 @@ main(int argc, char *argv[]) {
 	noecho();
 	keypad(stdscr, TRUE);
 
-	// start the game
+	// Start the game
 	attron(COLOR_PAIR(ACCENT));
 	mvwprintw(stdscr, LINES / 2 + 1, COLS / 12, "%s", turn[0]);
 	attroff(COLOR_PAIR(ACCENT));
