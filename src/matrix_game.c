@@ -62,6 +62,7 @@ typedef struct {
 static void shuffle(int **a);
 static void initialize(int **a);
 static void rotate(int **a);
+static void swap(int **a, Position *p1, Position *p2);
 static void board(WINDOW *win, int starty, int startx, int lines, int cols, int tile_width, int tile_height);
 static void matrix_board(int **a);
 
