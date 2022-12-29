@@ -55,7 +55,7 @@ static const char* keys[] = {
 
 /* position of elements to swap */
 typedef struct {
-	unsigned int i, j;
+	unsigned int x, y;
 } Position;
 
 /* function declarations */
@@ -103,6 +103,13 @@ rotate(int **a) {
       a[N - 1 - i][N - 1 - j] = a[j][N - 1 - i];
       a[j][N - 1 - i] = temp;
     }
+}
+
+void
+swap(int **a, Position *p1, Position *p2) {
+	temp = a[p1->x][p1->y];
+	a[p1->x][p1->y] = a[p2->x][p2->y];
+	a[p2->x][p2->y] = temp;
 }
 
 void
