@@ -32,7 +32,7 @@ matrix_game/
 $ git clone https://github.com/nemo256/matrix_game
 $ cd matrix_game
 $ make
-$ make install
+$ make clean install
 ```
 ## Usage
 > matrix_game <size_of_matrix>
@@ -55,6 +55,8 @@ $ vim src/matrix_game.c
 - Now just run make to compile the project:
 ```
 $ make
+$ make clean install
+$ matrix_game 3
 ```
 
 ## License
