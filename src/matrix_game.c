@@ -16,7 +16,7 @@
 #include <time.h>
 
 /* useful macro to get the size (length) of an array */
-#define LENGTH(X)               (sizeof X / sizeof X[0])
+#define LENGTH(X) (sizeof X / sizeof X[0])
 
 /* ncurses dimensions */
 #define STARTX 9
@@ -27,10 +27,9 @@
 #define HEIGHT 2
 
 /* enums */
-enum player { You, Computer };
-enum color { PRIMARY = 1, SECONDARY, ACCENT, rMAGENTA, RED, CYAN };
-enum player player;
-char ch = ' ';
+enum player { You, Computer }; 	/* player type */
+enum color { PRIMARY = 1, SECONDARY, ACCENT, iPRIMARY, RED, CYAN };
+char ch = ' '; /* keyboard input character */
 
 /* messages */
 static const char* welcome = "Welcome to the matrix game!";
@@ -223,7 +222,7 @@ main(int argc, char *argv[]) {
 	init_pair(PRIMARY, COLOR_MAGENTA, COLOR_BLACK);		// magenta
 	init_pair(SECONDARY, COLOR_GREEN, COLOR_BLACK);		// green
 	init_pair(ACCENT, COLOR_YELLOW, COLOR_BLACK);			// yellow
-	init_pair(rMAGENTA, COLOR_BLACK, COLOR_MAGENTA); 	// magenta - inverted
+	init_pair(iPRIMARY, COLOR_BLACK, COLOR_MAGENTA); 	// magenta - inverted
 	init_pair(RED, COLOR_RED, COLOR_BLACK);						// red
 	init_pair(CYAN, COLOR_CYAN, COLOR_BLACK);					// cyan
 
@@ -242,6 +241,7 @@ main(int argc, char *argv[]) {
 	/* start the game */
 	print(ACCENT, LINES / 2 + 1, COLS / 12, turn[0]);
 
+	enum player player;
 	matrix_board(a);
 	while((ch = getch()) != 'q') {
 		if (player == You) {
