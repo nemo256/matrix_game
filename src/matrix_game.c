@@ -339,7 +339,7 @@ main(int argc, char *argv[]) {
 
 	matrix_board(a);
 	if (check(a)) {
-		print(RED, LINES / 2 + 1, (COLS - strlen(result[0])) - COLS / 12, result[0]);
+		print(RED, LINES / 2, (COLS - strlen(result[0])) - COLS / 12, result[0]);
 		matrix_board(a);
 		getch();
 		endwin();
@@ -356,7 +356,7 @@ main(int argc, char *argv[]) {
 					print(ACCENT, LINES / 2, COLS / 12, turn[1]);
 					print(ACCENT, LINES / 2 + 1, COLS / 12, "Press any key...");
 					if (check(a)) {
-						print(RED, LINES / 2 + 1, (COLS - strlen(result[0])) - COLS / 12, result[0]);
+						print(RED, LINES / 2, (COLS - strlen(result[0])) - COLS / 12, result[0]);
 						matrix_board(a);
 						getch();
 						endwin();
@@ -378,7 +378,7 @@ main(int argc, char *argv[]) {
 					print(ACCENT, LINES / 2 + 1, COLS / 12, "Press any key...");
 					noecho();
 					if (check(a)) {
-						print(RED, LINES / 2 + 1, (COLS - strlen(result[0])) - COLS / 12, result[0]);
+						print(RED, LINES / 2, (COLS - strlen(result[0])) - COLS / 12, result[0]);
 						matrix_board(a);
 						getch();
 						endwin();
@@ -397,7 +397,7 @@ main(int argc, char *argv[]) {
 					print(ACCENT, LINES / 2, COLS / 12, turn[0]);
 					print(ACCENT, LINES / 2 + 1, COLS / 12, "                ");
 					if (check(a)) {
-						print(RED, LINES / 2 + 1, (COLS - strlen(result[0])) - COLS / 12, result[1]);
+						print(RED, LINES / 2, (COLS - strlen(result[0])) - COLS / 12, result[1]);
 						matrix_board(a);
 						getch();
 						endwin();
@@ -415,7 +415,7 @@ main(int argc, char *argv[]) {
 					print(ACCENT, LINES / 2, COLS / 12, turn[0]);
 					print(ACCENT, LINES / 2 + 1, COLS / 12, "                ");
 					if (check(a)) {
-						print(RED, LINES / 2 + 1, (COLS - strlen(result[0])) - COLS / 12, result[1]);
+						print(RED, LINES / 2, (COLS - strlen(result[0])) - COLS / 12, result[1]);
 						matrix_board(a);
 						getch();
 						endwin();
