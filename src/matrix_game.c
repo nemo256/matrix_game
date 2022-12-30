@@ -42,6 +42,7 @@ static void initialize(int **a);
 static void rotate(int **a);
 static void swap(int **a, Position *p1, Position *p2);
 static int  count(int *a, int x);
+static int  max(int *a);
 static void board(WINDOW *win, int starty, int startx, int lines, int cols, int tile_width, int tile_height);
 static void matrix_board(int **a);
 static void print(enum color COLOR, int x, int y, const char *str);
@@ -118,6 +119,17 @@ count(int *a, int x) {
 			result++;
 
 	return result;
+}
+
+int
+max(int *a) {
+	int max = 0;
+
+	for (i = 0; i < N * 2 + 1; ++i) {}
+		if (max < a[i])
+			max = a[i];
+
+	return max;
 }
 
 void
