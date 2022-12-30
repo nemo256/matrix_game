@@ -11,6 +11,7 @@
 
 #include <curses.h>
 #include <stdlib.h>
+#include <stdbool.h>
 #include <string.h>
 #include <unistd.h>
 #include <time.h>
@@ -41,8 +42,9 @@ static void shuffle(int **a);
 static void initialize(int **a);
 static void rotate(int **a);
 static void swap(int **a, Position *p1, Position *p2);
-static int  count(int *a, int x);
-static int  max(int *a);
+static int  count(int *a, int N, int x);
+static int  exist(int *a, int N, int x);
+static bool check(int **a);
 static void board(WINDOW *win, int starty, int startx, int lines, int cols, int tile_width, int tile_height);
 static void matrix_board(int **a);
 static void print(enum color COLOR, int x, int y, const char *str);
@@ -62,6 +64,10 @@ static const char* instructions[] = {
 static const char* turn[] = {
 	"Your turn --> ",
 	"Wait... -->   "
+};
+static const char* result[] = {
+	"You Win!  ",
+	"Game Over!"
 };
 static const char* keys[] = {
 	"<Press P to permute>",
@@ -111,10 +117,10 @@ swap(int **a, Position *p1, Position *p2) {
 }
 
 int
-count(int *a, int x) {
+count(int *a, int N, int x) {
 	int result = 0;
 
-	for (i = 0; i < N + 1; ++i)
+	for (int i = 0; i < N; ++i)
 		if (a[i] == x)
 			result++;
 
@@ -122,14 +128,40 @@ count(int *a, int x) {
 }
 
 int
-max(int *a) {
+exist(int *a, int N, int x) {
+	for (int i = 0; i < N; ++i)
+		if (a[i] == x)
+			return i;
+
+	return -1;
+}
+
+bool
+check(int **a) {
 	int max = 0;
+	int aRow[N + 1], aCol[N];
 
-	for (i = 0; i < N * 2 + 1; ++i)
-		if (max < a[i])
-			max = a[i];
+	for (i = 0; i < N + 1; ++i)
+		aRow[i] = a[N][i];
 
-	return max;
+	for (i = 0; i < N; ++i)
+		aCol[i] = a[i][N];
+
+	for (i = 0; i < N + 1; ++i)
+		aRow[i] = count(aRow, N + 1, aRow[i]);
+
+	if (exist(aRow, N + 1, 3) != -1)
+		return TRUE;
+	else {
+		int index = exist(aRow, N + 1, 2);
+		if (index != -1)
+			if (exist(aCol, N, a[N][index]))
+				return TRUE;
+			else
+				return FALSE;
+		else
+			return FALSE;
+	}
 }
 
 void
@@ -267,6 +299,9 @@ main(int argc, char *argv[]) {
 
 	enum player PLAYER = You;
 	matrix_board(a);
+	if (check(a)) {
+		print(RED, LINES / 2 + 1, (COLS - strlen(result[0])) - COLS / 12, result[0]);
+	}
 	while((ch = getch()) != 'q') {
 		if (PLAYER == You) {
 			switch(ch) {
@@ -275,11 +310,17 @@ main(int argc, char *argv[]) {
 					matrix_board(a);
 					PLAYER = Computer;
 					print(ACCENT, LINES / 2 + 1, COLS / 12, turn[1]);
+					if (check(a)) {
+						print(RED, LINES / 2 + 1, (COLS - strlen(result[0])) - COLS / 12, result[0]);
+					}
 					break;
 				case 'p':
 					matrix_board(a);
 					PLAYER = Computer;
 					print(ACCENT, LINES / 2 + 1, COLS / 12, turn[1]);
+					if (check(a)) {
+						print(RED, LINES / 2 + 1, (COLS - strlen(result[0])) - COLS / 12, result[0]);
+					}
 					break;
 				default:
 					break;
