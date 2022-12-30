@@ -87,8 +87,8 @@ shuffle(int **a) {
      r = rand() % N;
      for (j = 0; j < N; ++j) {
          temp =  a[i][j];
-         a[i][j] = a[r][j];
-         a[r][j] = temp;
+         a[i][j] = a[i][r];
+         a[i][r] = temp;
      }
   }
 }
@@ -154,12 +154,14 @@ check(int **a) {
 	for (i = 0; i < N + 1; ++i)
 		aRow[i] = count(aRow, N + 1, aRow[i]);
 
-	if (exist(aRow, N + 1, 3) != -1)
+	if (exist(aRow, N + 1, 3) != -1) {
+		int index = exist(aRow, N + 1, 3);
+		similiar_sum = a[N][index];
 		return TRUE;
-	else {
+	} else {
 		int index = exist(aRow, N + 1, 2);
 		if (index != -1) {
-			if (exist(aCol, N, a[index][N])) {
+			if (exist(aCol, N, a[N][index]) != -1) {
 				similiar_sum = a[N][index];
 				return TRUE;
 			} else
