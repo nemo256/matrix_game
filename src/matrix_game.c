@@ -138,7 +138,6 @@ exist(int *a, int N, int x) {
 
 bool
 check(int **a) {
-	int max = 0;
 	int aRow[N + 1], aCol[N];
 
 	for (i = 0; i < N + 1; ++i)
@@ -295,7 +294,7 @@ main(int argc, char *argv[]) {
 	keypad(stdscr, TRUE);
 
 	/* start the game */
-	print(ACCENT, LINES / 2 + 1, COLS / 12, turn[0]);
+	print(ACCENT, LINES / 2, COLS / 12, turn[0]);
 
 	enum player PLAYER = You;
 	matrix_board(a);
@@ -311,7 +310,7 @@ main(int argc, char *argv[]) {
 					rotate(a);
 					matrix_board(a);
 					PLAYER = Computer;
-					print(ACCENT, LINES / 2 + 1, COLS / 12, turn[1]);
+					print(ACCENT, LINES / 2, COLS / 12, turn[1]);
 					if (check(a)) {
 						print(RED, LINES / 2 + 1, (COLS - strlen(result[0])) - COLS / 12, result[0]);
 						getch();
@@ -321,7 +320,7 @@ main(int argc, char *argv[]) {
 				case 'p':
 					matrix_board(a);
 					PLAYER = Computer;
-					print(ACCENT, LINES / 2 + 1, COLS / 12, turn[1]);
+					print(ACCENT, LINES / 2, COLS / 12, turn[1]);
 					if (check(a)) {
 						print(RED, LINES / 2 + 1, (COLS - strlen(result[0])) - COLS / 12, result[0]);
 						getch();
@@ -334,7 +333,7 @@ main(int argc, char *argv[]) {
 		} else {
 			sleep(2);
 			PLAYER = You;
-			print(ACCENT, LINES / 2 + 1, COLS / 12, turn[0]);
+			print(ACCENT, LINES / 2, COLS / 12, turn[0]);
 			refresh();
 			if (check(a)) {
 				print(RED, LINES / 2 + 1, (COLS - strlen(result[0])) - COLS / 12, result[1]);
