@@ -241,7 +241,7 @@ main(int argc, char *argv[]) {
 	/* start the game */
 	print(ACCENT, LINES / 2 + 1, COLS / 12, turn[0]);
 
-	enum player PLAYER;
+	enum player PLAYER = You;
 	matrix_board(a);
 	while((ch = getch()) != 'q') {
 		if (PLAYER == You) {
@@ -250,19 +250,21 @@ main(int argc, char *argv[]) {
 					rotate(a);
 					matrix_board(a);
 					PLAYER = Computer;
+					print(ACCENT, LINES / 2 + 1, COLS / 12, turn[1]);
 					break;
 				case 'p':
 					matrix_board(a);
 					PLAYER = Computer;
+					print(ACCENT, LINES / 2 + 1, COLS / 12, turn[1]);
 					break;
 				default:
 					break;
 			}
-			print(ACCENT, LINES / 2 + 1, COLS / 12, turn[1]);
 		} else {
 			sleep(2);
-			print(ACCENT, LINES / 2 + 1, COLS / 12, turn[0]);
 			PLAYER = You;
+			print(ACCENT, LINES / 2 + 1, COLS / 12, turn[0]);
+			refresh();
 		}
 	}
 	endwin();
