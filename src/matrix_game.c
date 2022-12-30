@@ -30,28 +30,32 @@
 /* enums */
 enum player { You, Computer }; 	/* player type */
 enum color { PRIMARY = 1, SECONDARY, ACCENT, iPRIMARY, RED, CYAN };
-char ch = ' '; /* keyboard input character */
 
 /* position of elements to swap */
 typedef struct {
-	unsigned int x, y;
+	int x, y;
 } Position;
 
 /* function declarations */
 static void shuffle(int **a);
 static void initialize(int **a);
 static void rotate(int **a);
-static void swap(int **a, Position *p1, Position *p2);
+static void swap(int **a, Position p1, Position p2);
 static int  count(int *a, int N, int x);
 static int  exist(int *a, int N, int x);
 static bool check(int **a);
+static void get_digits(char *str);
 static void board(WINDOW *win, int starty, int startx, int lines, int cols, int tile_width, int tile_height);
 static void matrix_board(int **a);
 static void print(enum color COLOR, int x, int y, const char *str);
 
 /* declarations */
-static int **a, N;
+static int **a, N, similiar_sum = -1;
 static int i, j, temp;
+static char ch = ' '; 					/* keyboard input character */
+static enum player PLAYER;
+static Position p[2];
+static char input[30];
 
 /* messages */
 static const char* welcome = "Welcome to the matrix game!";
@@ -73,6 +77,7 @@ static const char* keys[] = {
 	"<Press P to permute>",
 	"<Press R to rotate>"
 };
+static const char* permute = "Permute (i1,j1) = (i2,j2): ";
 
 /* function implementations */
 void
@@ -110,10 +115,10 @@ rotate(int **a) {
 }
 
 void
-swap(int **a, Position *p1, Position *p2) {
-	temp = a[p1->x][p1->y];
-	a[p1->x][p1->y] = a[p2->x][p2->y];
-	a[p2->x][p2->y] = temp;
+swap(int **a, Position p1, Position p2) {
+	temp = a[p1.x][p1.y];
+	a[p1.x][p1.y] = a[p2.x][p2.y];
+	a[p2.x][p2.y] = temp;
 }
 
 int
@@ -153,14 +158,35 @@ check(int **a) {
 		return TRUE;
 	else {
 		int index = exist(aRow, N + 1, 2);
-		if (index != -1)
-			if (exist(aCol, N, a[index][N]))
+		if (index != -1) {
+			if (exist(aCol, N, a[index][N])) {
+				similiar_sum = a[N][index];
 				return TRUE;
-			else
+			} else
 				return FALSE;
-		else
+		} else
 			return FALSE;
 	}
+}
+
+void
+get_digits(char *str) {
+	int digits[20];
+	for (i = 0, j = 0; i < strlen(str); ++i)
+		if (str[i] >= '0' && str[i] <= '9')
+			digits[j++] = str[i] - '0';
+
+	if (j != 4) {
+		print(RED, LINES - 1, (COLS - strlen(permute)) + strlen(permute) / 4, "Only 4 digits!");
+		getch();
+    endwin();
+    exit(1);
+	}
+	
+	p[0].x = digits[0];
+	p[0].y = digits[1];
+	p[1].x = digits[2];
+	p[1].y = digits[3];
 }
 
 void
@@ -222,11 +248,19 @@ matrix_board(int **a) {
 	for (i = 0; i < N + 1; ++i) {
 		for (j = 0; j < N + 1; ++j) {
 			if (i == N || j == N) {
-				attron(COLOR_PAIR(SECONDARY));
-				mvprintw(starty + j * HEIGHT + deltay,
-						startx + i * WIDTH  + deltax,
-						"%03d", a[i][j]);
-				attroff(COLOR_PAIR(SECONDARY));
+				if (similiar_sum != -1 && similiar_sum == a[i][j]) {
+					attron(COLOR_PAIR(CYAN));
+					mvprintw(starty + j * HEIGHT + deltay,
+							startx + i * WIDTH  + deltax,
+							"%03d", a[i][j]);
+					attroff(COLOR_PAIR(CYAN));
+				} else {
+					attron(COLOR_PAIR(SECONDARY));
+					mvprintw(starty + j * HEIGHT + deltay,
+							startx + i * WIDTH  + deltax,
+							"%03d", a[i][j]);
+					attroff(COLOR_PAIR(SECONDARY));
+				}
 			} else {
 				mvprintw(starty + j * HEIGHT + deltay,
 						startx + i * WIDTH  + deltax,
@@ -289,20 +323,27 @@ main(int argc, char *argv[]) {
 		print(ACCENT, LINES - i - 1, 1, keys[i]);
 	refresh();
 
-	curs_set(0);
+	/* ncurses options */
+	/* cbreak(); */
 	noecho();
+	curs_set(0);
 	keypad(stdscr, TRUE);
 
 	/* start the game */
 	print(ACCENT, LINES / 2, COLS / 12, turn[0]);
 
-	enum player PLAYER = You;
+	/* You will start first */
+	PLAYER = You;
+
 	matrix_board(a);
 	if (check(a)) {
 		print(RED, LINES / 2 + 1, (COLS - strlen(result[0])) - COLS / 12, result[0]);
+		matrix_board(a);
 		getch();
 		endwin();
+    exit(0);
 	}
+
 	while((ch = getch()) != 'q') {
 		if (PLAYER == You) {
 			switch(ch) {
@@ -313,18 +354,29 @@ main(int argc, char *argv[]) {
 					print(ACCENT, LINES / 2, COLS / 12, turn[1]);
 					if (check(a)) {
 						print(RED, LINES / 2 + 1, (COLS - strlen(result[0])) - COLS / 12, result[0]);
+						matrix_board(a);
 						getch();
 						endwin();
+						exit(0);
 					}
 					break;
 				case 'p':
+					echo();
+					print(ACCENT, LINES - 2, (COLS - strlen(permute)) - 1, permute);
+					mvprintw(LINES - 1, (COLS - strlen(permute)) + strlen(permute) / 4, "%s", "");
+					getstr(input);
+					get_digits(input);
+					swap(a, p[0], p[1]);
 					matrix_board(a);
 					PLAYER = Computer;
 					print(ACCENT, LINES / 2, COLS / 12, turn[1]);
+					noecho();
 					if (check(a)) {
 						print(RED, LINES / 2 + 1, (COLS - strlen(result[0])) - COLS / 12, result[0]);
+						matrix_board(a);
 						getch();
 						endwin();
+						exit(0);
 					}
 					break;
 				default:
@@ -337,8 +389,10 @@ main(int argc, char *argv[]) {
 			refresh();
 			if (check(a)) {
 				print(RED, LINES / 2 + 1, (COLS - strlen(result[0])) - COLS / 12, result[1]);
+				matrix_board(a);
 				getch();
 				endwin();
+				exit(0);
 			}
 		}
 	}
