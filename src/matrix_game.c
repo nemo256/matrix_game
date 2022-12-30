@@ -301,6 +301,8 @@ main(int argc, char *argv[]) {
 	matrix_board(a);
 	if (check(a)) {
 		print(RED, LINES / 2 + 1, (COLS - strlen(result[0])) - COLS / 12, result[0]);
+		getch();
+		endwin();
 	}
 	while((ch = getch()) != 'q') {
 		if (PLAYER == You) {
@@ -312,6 +314,8 @@ main(int argc, char *argv[]) {
 					print(ACCENT, LINES / 2 + 1, COLS / 12, turn[1]);
 					if (check(a)) {
 						print(RED, LINES / 2 + 1, (COLS - strlen(result[0])) - COLS / 12, result[0]);
+						getch();
+						endwin();
 					}
 					break;
 				case 'p':
@@ -320,6 +324,8 @@ main(int argc, char *argv[]) {
 					print(ACCENT, LINES / 2 + 1, COLS / 12, turn[1]);
 					if (check(a)) {
 						print(RED, LINES / 2 + 1, (COLS - strlen(result[0])) - COLS / 12, result[0]);
+						getch();
+						endwin();
 					}
 					break;
 				default:
@@ -330,6 +336,11 @@ main(int argc, char *argv[]) {
 			PLAYER = You;
 			print(ACCENT, LINES / 2 + 1, COLS / 12, turn[0]);
 			refresh();
+			if (check(a)) {
+				print(RED, LINES / 2 + 1, (COLS - strlen(result[0])) - COLS / 12, result[1]);
+				getch();
+				endwin();
+			}
 		}
 	}
 	endwin();
