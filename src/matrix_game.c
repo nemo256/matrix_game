@@ -28,7 +28,7 @@
 
 /* enums */
 enum player { You, Computer };
-enum color { PRIMARY = 1, SECONDARY, ACCENT };
+enum color { PRIMARY = 1, SECONDARY, ACCENT, rMAGENTA, RED, CYAN };
 enum player player;
 char ch = ' ';
 
@@ -223,9 +223,9 @@ main(int argc, char *argv[]) {
 	init_pair(PRIMARY, COLOR_MAGENTA, COLOR_BLACK);	// magenta
 	init_pair(SECONDARY, COLOR_GREEN, COLOR_BLACK);	// green
 	init_pair(ACCENT, COLOR_YELLOW, COLOR_BLACK);		// yellow
-	init_pair(4, COLOR_BLACK, COLOR_MAGENTA);				// magenta - inverted
-	init_pair(5, COLOR_RED, COLOR_BLACK);						// red
-	init_pair(6, COLOR_CYAN, COLOR_BLACK);					// cyan
+	init_pair(rMAGENTA, COLOR_BLACK, COLOR_MAGENTA);				// magenta - inverted
+	init_pair(RED, COLOR_RED, COLOR_BLACK);						// red
+	init_pair(CYAN, COLOR_CYAN, COLOR_BLACK);					// cyan
 
 	/* welcome message / game instructions */
 	print(ACCENT, 1, (COLS - strlen(welcome)) / 2 , welcome);
