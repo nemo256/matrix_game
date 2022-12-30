@@ -29,6 +29,7 @@
 
 /* enums */
 enum player { You, Computer }; 	/* player type */
+enum move { Rotation, Permutation }; 	/* player type */
 enum color { PRIMARY = 1, SECONDARY, ACCENT, iPRIMARY, RED, CYAN };
 
 /* position of elements to swap */
@@ -54,6 +55,7 @@ static int **a, N, similiar_sum = -1;
 static int i, j, temp;
 static char ch = ' '; 					/* keyboard input character */
 static enum player PLAYER;
+static enum move MOVE;
 static Position p[2];
 static char input[30];
 
@@ -338,12 +340,10 @@ main(int argc, char *argv[]) {
 	PLAYER = You;
 
 	matrix_board(a);
-	if (check(a)) {
-		print(RED, LINES / 2, (COLS - strlen(result[0])) - COLS / 12, result[0]);
+	while (check(a)) {
+		shuffle(a);
+		similiar_sum = -1;
 		matrix_board(a);
-		getch();
-		endwin();
-    exit(0);
 	}
 
 	while((ch = getch()) != 'q') {
