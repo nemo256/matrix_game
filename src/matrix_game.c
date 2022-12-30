@@ -26,13 +26,9 @@
 #define WIDTH  5
 #define HEIGHT 2
 
-/* colors */
-#define PRIMARY 2
-#define SECONDARY 6
-#define ACCENT 4
-
-/* player 0 is You, player 1 is the Computer */
+/* enums */
 enum player { You, Computer };
+enum color { PRIMARY = 1, SECONDARY, ACCENT };
 enum player player;
 char ch = ' ';
 
@@ -216,12 +212,12 @@ main(int argc, char *argv[]) {
 	use_default_colors();
 
 	/* initialize color pairs */
-	init_pair(1, COLOR_BLACK, COLOR_MAGENTA);		// magenta - inverted
-	init_pair(2, COLOR_MAGENTA, COLOR_BLACK);		// magenta
-	init_pair(3, COLOR_CYAN, COLOR_BLACK);			// cyan
-	init_pair(4, COLOR_YELLOW, COLOR_BLACK);		// yellow
-	init_pair(5, COLOR_RED, COLOR_BLACK);				// red
-	init_pair(6, COLOR_GREEN, COLOR_BLACK);			// green
+	init_pair(PRIMARY, COLOR_MAGENTA, COLOR_BLACK);	// magenta
+	init_pair(SECONDARY, COLOR_GREEN, COLOR_BLACK);	// green
+	init_pair(ACCENT, COLOR_YELLOW, COLOR_BLACK);		// yellow
+	init_pair(4, COLOR_BLACK, COLOR_MAGENTA);				// magenta - inverted
+	init_pair(5, COLOR_RED, COLOR_BLACK);						// red
+	init_pair(6, COLOR_CYAN, COLOR_BLACK);					// cyan
 
 	/* welcome message / game instructions */
 	attron(COLOR_PAIR(ACCENT));
