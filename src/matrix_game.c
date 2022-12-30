@@ -354,6 +354,7 @@ main(int argc, char *argv[]) {
 					matrix_board(a);
 					PLAYER = Computer;
 					print(ACCENT, LINES / 2, COLS / 12, turn[1]);
+					print(ACCENT, LINES / 2 + 1, COLS / 12, "Press any key...");
 					if (check(a)) {
 						print(RED, LINES / 2 + 1, (COLS - strlen(result[0])) - COLS / 12, result[0]);
 						matrix_board(a);
@@ -372,6 +373,7 @@ main(int argc, char *argv[]) {
 					matrix_board(a);
 					PLAYER = Computer;
 					print(ACCENT, LINES / 2, COLS / 12, turn[1]);
+					print(ACCENT, LINES / 2 + 1, COLS / 12, "Press any key...");
 					noecho();
 					if (check(a)) {
 						print(RED, LINES / 2 + 1, (COLS - strlen(result[0])) - COLS / 12, result[0]);
@@ -385,16 +387,41 @@ main(int argc, char *argv[]) {
 					break;
 			}
 		} else {
-			sleep(2);
-			PLAYER = You;
-			print(ACCENT, LINES / 2, COLS / 12, turn[0]);
-			refresh();
-			if (check(a)) {
-				print(RED, LINES / 2 + 1, (COLS - strlen(result[0])) - COLS / 12, result[1]);
-				matrix_board(a);
-				getch();
-				endwin();
-				exit(0);
+			switch(rand() % 2) { // random choice: 0 to rotate, 1 to permute
+				case 0:
+					rotate(a);
+					matrix_board(a);
+					PLAYER = You;
+					print(ACCENT, LINES / 2, COLS / 12, turn[0]);
+					print(ACCENT, LINES / 2 + 1, COLS / 12, "                ");
+					if (check(a)) {
+						print(RED, LINES / 2 + 1, (COLS - strlen(result[0])) - COLS / 12, result[1]);
+						matrix_board(a);
+						getch();
+						endwin();
+						exit(0);
+					}
+					break;
+				case 1:
+					p[0].x = rand() % N;
+					p[0].y = rand() % N;
+					p[1].x = rand() % N;
+					p[1].y = rand() % N;
+					swap(a, p[0], p[1]);
+					matrix_board(a);
+					PLAYER = You;
+					print(ACCENT, LINES / 2, COLS / 12, turn[0]);
+					print(ACCENT, LINES / 2 + 1, COLS / 12, "                ");
+					if (check(a)) {
+						print(RED, LINES / 2 + 1, (COLS - strlen(result[0])) - COLS / 12, result[1]);
+						matrix_board(a);
+						getch();
+						endwin();
+						exit(0);
+					}
+					break;
+				default:
+					break;
 			}
 		}
 	}
