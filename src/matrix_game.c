@@ -381,8 +381,8 @@ main(int argc, char *argv[]) {
 					}
 					break;
 				case 'p':
-					MOVE = Permutation;
 					echo();
+					MOVE = Permutation;
 					print(ACCENT, LINES - 2, (COLS - strlen(permute)) - 1, permute);
 					mvprintw(LINES - 1, (COLS - strlen(permute)) + strlen(permute) / 4, "%s", "");
 					getstr(input);
