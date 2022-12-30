@@ -368,6 +368,7 @@ main(int argc, char *argv[]) {
 					print(ACCENT, LINES - 2, (COLS - strlen(permute)) - 1, permute);
 					mvprintw(LINES - 1, (COLS - strlen(permute)) + strlen(permute) / 4, "%s", "");
 					getstr(input);
+					mvprintw(LINES - 1, (COLS - strlen(permute)) - 1, "                    ");
 					get_digits(input);
 					swap(a, p[0], p[1]);
 					matrix_board(a);
