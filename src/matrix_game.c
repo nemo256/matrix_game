@@ -58,6 +58,7 @@ static enum player PLAYER;
 static enum move MOVE;
 static Position p[2];
 static char input[30];
+static int random_number;
 
 /* messages */
 static const char* welcome = "Welcome to the matrix game!";
@@ -181,11 +182,19 @@ get_digits(char *str) {
 			digits[j++] = str[i] - '0';
 
 	if (j != 4) {
-		print(RED, LINES - 1, (COLS - strlen(permute)) + strlen(permute) / 4, "Only 4 digits!");
+		print(RED, LINES - 1, (COLS - strlen(permute)) + strlen(permute) / 4, "Only 4 digits!  ");
 		getch();
     endwin();
     exit(1);
 	}
+
+	for (i = 0; i < j; ++i)
+		if (digits[i] >= N) {
+			print(RED, LINES - 1, (COLS - strlen(permute)) + strlen(permute) / 4, "Invalid indices!");
+			getch();
+			endwin();
+			exit(1);
+		}
 	
 	p[0].x = digits[0];
 	p[0].y = digits[1];
@@ -339,6 +348,9 @@ main(int argc, char *argv[]) {
 	/* You will start first */
 	PLAYER = You;
 
+	/* default move will be none */
+	MOVE = -1;
+
 	matrix_board(a);
 	while (check(a)) {
 		shuffle(a);
@@ -346,15 +358,20 @@ main(int argc, char *argv[]) {
 		matrix_board(a);
 	}
 
-	while((ch = getch()) != 'q') {
+	while ((ch = getch()) != 'q') {
+		while (MOVE == Rotation && ch == 'r' && PLAYER == You) {
+			print(RED, LINES / 2 + 1, COLS / 12, "Error 2x rotation");
+			ch = getch();
+		}
 		if (PLAYER == You) {
 			switch(ch) {
 				case 'r':
+					MOVE = Rotation;
 					rotate(a);
 					matrix_board(a);
 					PLAYER = Computer;
 					print(ACCENT, LINES / 2, COLS / 12, turn[1]);
-					print(ACCENT, LINES / 2 + 1, COLS / 12, "Press any key...");
+					print(ACCENT, LINES / 2 + 1, COLS / 12, "Press any key...   ");
 					if (check(a)) {
 						print(RED, LINES / 2, (COLS - strlen(result[0])) - COLS / 12, result[0]);
 						matrix_board(a);
@@ -364,6 +381,7 @@ main(int argc, char *argv[]) {
 					}
 					break;
 				case 'p':
+					MOVE = Permutation;
 					echo();
 					print(ACCENT, LINES - 2, (COLS - strlen(permute)) - 1, permute);
 					mvprintw(LINES - 1, (COLS - strlen(permute)) + strlen(permute) / 4, "%s", "");
@@ -375,7 +393,7 @@ main(int argc, char *argv[]) {
 					matrix_board(a);
 					PLAYER = Computer;
 					print(ACCENT, LINES / 2, COLS / 12, turn[1]);
-					print(ACCENT, LINES / 2 + 1, COLS / 12, "Press any key...");
+					print(ACCENT, LINES / 2 + 1, COLS / 12, "Press any key...   ");
 					noecho();
 					if (check(a)) {
 						print(RED, LINES / 2, (COLS - strlen(result[0])) - COLS / 12, result[0]);
@@ -389,8 +407,12 @@ main(int argc, char *argv[]) {
 					break;
 			}
 		} else {
-			switch(rand() % 2) { // random choice: 0 to rotate, 1 to permute
+			random_number = rand() % 2;
+			if (MOVE == Rotation && random_number == 0)
+				random_number = 1;
+			switch(random_number) { // random choice: 0 to rotate, 1 to permute
 				case 0:
+					MOVE = Rotation;
 					rotate(a);
 					matrix_board(a);
 					PLAYER = You;
@@ -405,6 +427,7 @@ main(int argc, char *argv[]) {
 					}
 					break;
 				case 1:
+					MOVE = Permutation;
 					p[0].x = rand() % N;
 					p[0].y = rand() % N;
 					p[1].x = rand() % N;
