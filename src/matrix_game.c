@@ -31,23 +31,6 @@ enum player { You, Computer }; 	/* player type */
 enum color { PRIMARY = 1, SECONDARY, ACCENT, iPRIMARY, RED, CYAN };
 char ch = ' '; /* keyboard input character */
 
-/* messages */
-static const char* welcome = "Welcome to the matrix game!";
-static const char* instructions[] = {
-	"You have to defeat the computer by finding",
-	"the same sum of 2 rows and a column or 3 rows.",
-	"Each player has two moves, to either rotate the matrix",
-	"or to swap two elements in the matrix."
-};
-static const char* turn[] = {
-	"Your turn --> ",
-	"Wait... -->   "
-};
-static const char* keys[] = {
-	"<Press P to permute>",
-	"<Press R to rotate>"
-};
-
 /* position of elements to swap */
 typedef struct {
 	unsigned int x, y;
@@ -65,6 +48,23 @@ static void print(enum color COLOR, int x, int y, const char *str);
 /* declarations */
 static int **a, N;
 static int i, j, temp;
+
+/* messages */
+static const char* welcome = "Welcome to the matrix game!";
+static const char* instructions[] = {
+	"You have to defeat the computer by finding",
+	"the same sum of 2 rows and a column or 3 rows.",
+	"Each player has two moves, to either rotate the matrix",
+	"or to swap two elements in the matrix."
+};
+static const char* turn[] = {
+	"Your turn --> ",
+	"Wait... -->   "
+};
+static const char* keys[] = {
+	"<Press P to permute>",
+	"<Press R to rotate>"
+};
 
 /* function implementations */
 void
@@ -241,26 +241,28 @@ main(int argc, char *argv[]) {
 	/* start the game */
 	print(ACCENT, LINES / 2 + 1, COLS / 12, turn[0]);
 
-	enum player player;
+	enum player PLAYER;
 	matrix_board(a);
 	while((ch = getch()) != 'q') {
-		if (player == You) {
+		if (PLAYER == You) {
 			switch(ch) {
 				case 'r':
 					rotate(a);
 					matrix_board(a);
-					player = Computer;
+					PLAYER = Computer;
 					break;
 				case 'p':
 					matrix_board(a);
-					player = Computer;
+					PLAYER = Computer;
+					break;
+				default:
 					break;
 			}
 			print(ACCENT, LINES / 2 + 1, COLS / 12, turn[1]);
 		} else {
 			sleep(2);
 			print(ACCENT, LINES / 2 + 1, COLS / 12, turn[0]);
-			player = You;
+			PLAYER = You;
 		}
 	}
 	endwin();
