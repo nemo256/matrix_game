@@ -220,10 +220,10 @@ main(int argc, char *argv[]) {
 	use_default_colors();
 
 	/* initialize ncurses color pairs */
-	init_pair(PRIMARY, COLOR_MAGENTA, COLOR_BLACK);	// magenta
-	init_pair(SECONDARY, COLOR_GREEN, COLOR_BLACK);	// green
-	init_pair(ACCENT, COLOR_YELLOW, COLOR_BLACK);		// yellow
-	init_pair(rMAGENTA, COLOR_BLACK, COLOR_MAGENTA);				// magenta - inverted
+	init_pair(PRIMARY, COLOR_MAGENTA, COLOR_BLACK);		// magenta
+	init_pair(SECONDARY, COLOR_GREEN, COLOR_BLACK);		// green
+	init_pair(ACCENT, COLOR_YELLOW, COLOR_BLACK);			// yellow
+	init_pair(rMAGENTA, COLOR_BLACK, COLOR_MAGENTA); 	// magenta - inverted
 	init_pair(RED, COLOR_RED, COLOR_BLACK);						// red
 	init_pair(CYAN, COLOR_CYAN, COLOR_BLACK);					// cyan
 
