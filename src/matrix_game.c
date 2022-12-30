@@ -41,6 +41,7 @@ static void shuffle(int **a);
 static void initialize(int **a);
 static void rotate(int **a);
 static void swap(int **a, Position *p1, Position *p2);
+static unsigned int count(const int *a, const int x);
 static void board(WINDOW *win, int starty, int startx, int lines, int cols, int tile_width, int tile_height);
 static void matrix_board(int **a);
 static void print(enum color COLOR, int x, int y, const char *str);
@@ -106,6 +107,17 @@ swap(int **a, Position *p1, Position *p2) {
 	temp = a[p1->x][p1->y];
 	a[p1->x][p1->y] = a[p2->x][p2->y];
 	a[p2->x][p2->y] = temp;
+}
+
+unsigned int
+count(const int *a, const int x) {
+	unsigned int result = 0;
+
+	for (i = 0; i < N; ++i)
+		if (a[i] == x)
+			result++;
+
+	return result;
 }
 
 void
