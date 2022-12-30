@@ -154,7 +154,7 @@ check(int **a) {
 	else {
 		int index = exist(aRow, N + 1, 2);
 		if (index != -1)
-			if (exist(aCol, N, a[N][index]))
+			if (exist(aCol, N, a[index][N]))
 				return TRUE;
 			else
 				return FALSE;
