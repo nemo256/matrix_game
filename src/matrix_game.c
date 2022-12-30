@@ -61,12 +61,13 @@ static void rotate(int **a);
 static void swap(int **a, Position *p1, Position *p2);
 static void board(WINDOW *win, int starty, int startx, int lines, int cols, int tile_width, int tile_height);
 static void matrix_board(int **a);
+static void print(enum color COLOR, int x, int y, const char *str);
 
 /* declarations */
 static int **a, N;
 static int i, j, temp;
 
-
+/* function implementations */
 void
 shuffle(int **a) {
 	int r;
@@ -181,6 +182,13 @@ matrix_board(int **a) {
 	}
 }
 
+void
+print(enum color COLOR, int x, int y, const char *str) {
+	attron(COLOR_PAIR(COLOR));
+	mvwprintw(stdscr, x, y, "%s", str);
+	attroff(COLOR_PAIR(COLOR));
+}
+
 int
 main(int argc, char *argv[]) {
   /* initialization (should only be called once) */
@@ -220,13 +228,11 @@ main(int argc, char *argv[]) {
 	init_pair(6, COLOR_CYAN, COLOR_BLACK);					// cyan
 
 	/* welcome message / game instructions */
-	attron(COLOR_PAIR(ACCENT));
-	mvwprintw(stdscr, 1, (COLS - strlen(welcome)) / 2 , "%s", welcome);
+	print(ACCENT, 1, (COLS - strlen(welcome)) / 2 , welcome);
 	for (i = 0; i < LENGTH(instructions); ++i)
-		mvwprintw(stdscr, i + 2, (COLS - strlen(instructions[i])) / 2, "%s", instructions[i]);
+		print(ACCENT, i + 2, (COLS - strlen(instructions[i])) / 2, instructions[i]);
 	for (i = 0; i < LENGTH(keys); ++i)
-		mvwprintw(stdscr, LINES - i - 1, 1, "%s", keys[i]);
-	attroff(COLOR_PAIR(ACCENT));
+		print(ACCENT, LINES - i - 1, 1, keys[i]);
 	refresh();
 
 	curs_set(0);
@@ -234,9 +240,7 @@ main(int argc, char *argv[]) {
 	keypad(stdscr, TRUE);
 
 	/* start the game */
-	attron(COLOR_PAIR(ACCENT));
-	mvwprintw(stdscr, LINES / 2 + 1, COLS / 12, "%s", turn[0]);
-	attroff(COLOR_PAIR(ACCENT));
+	print(ACCENT, LINES / 2 + 1, COLS / 12, turn[0]);
 
 	matrix_board(a);
 	while((ch = getch()) != 'q') {
@@ -252,16 +256,10 @@ main(int argc, char *argv[]) {
 					player = Computer;
 					break;
 			}
-			attron(COLOR_PAIR(ACCENT));
-			mvwprintw(stdscr, LINES / 2 + 1, COLS / 12, "%s", turn[1]);
-			attroff(COLOR_PAIR(ACCENT));
-			refresh();
+			print(ACCENT, LINES / 2 + 1, COLS / 12, turn[1]);
 		} else {
 			sleep(2);
-			attron(COLOR_PAIR(ACCENT));
-			mvwprintw(stdscr, LINES / 2 + 1, COLS / 12, "%s", turn[0]);
-			attroff(COLOR_PAIR(ACCENT));
-			refresh();
+			print(ACCENT, LINES / 2 + 1, COLS / 12, turn[0]);
 			player = You;
 		}
 	}
