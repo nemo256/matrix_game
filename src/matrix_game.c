@@ -20,17 +20,17 @@
 #define LENGTH(X) (sizeof X / sizeof X[0])
 
 /* ncurses dimensions */
-#define STARTX 9
-#define STARTY 3
+#define STARTX  9
+#define STARTY  3
 #define OFFSETX 0
 #define OFFSETY 1
-#define WIDTH  5
-#define HEIGHT 2
+#define WIDTH   5
+#define HEIGHT  2
 
 /* enums */
 enum player { You, Computer }; 	/* player type */
-enum move { Rotation, Permutation }; 	/* player type */
-enum color { PRIMARY = 1, SECONDARY, ACCENT, iPRIMARY, RED, CYAN };
+enum move   { Rotation, Permutation }; 	/* which move */
+enum color  { PRIMARY = 1, SECONDARY, ACCENT, iPRIMARY, RED, CYAN };
 
 /* position of elements to swap */
 typedef struct {
